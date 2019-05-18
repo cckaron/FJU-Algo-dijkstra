@@ -1,5 +1,4 @@
-from collections import defaultdict
-
+from collections import defaultdict, deque
 class Graph:
   def __init__(self):
     self.nodes = set()
@@ -52,5 +51,20 @@ def run(graph, initial):
       if edge not in visited or weight < visited[edge]:
         visited[edge] = weight
         path[edge] = min_node
+        
 
   return visited, path
+
+def shortest_path(graph, origin, destination):
+    visited, paths = run(graph, origin)
+    full_path = deque()
+    _destination = paths[destination]
+
+    while _destination != origin:
+        full_path.appendleft(_destination)
+        _destination = paths[_destination]
+
+    full_path.appendleft(origin)
+    full_path.append(destination)
+
+    return visited[destination], list(full_path)
